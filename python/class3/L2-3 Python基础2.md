@@ -274,7 +274,7 @@ TypeError: 'str' object does not support item assignment
 ```
 
 关于字符串的更多信息，大家可以看看python的文档：
-[https://docs.python.org/3.7/library/stdtypes.html#text-sequence-type-str](https://docs.python.org/3.7/library/stdtypes.html#text-sequence-type-str)
+[https://docs.python.org/3.7/library/stdtypes.html#text-sequence-type-str][1]
 另外提醒大家，所有的命令不需要死记硬背，遇到的时候，通过查文档获得用法就可以了。
 
 下面我们看看中文的问题：
@@ -333,20 +333,20 @@ print(t)
 ```python
 I like Tom's cat
 ```
-方法是“转义字符”，在python语言中，转义字符是“”。使用转义字符，我们可以将引号包含在字符串中：
+方法是“转义字符”，在python语言中，转义字符是“\\”。使用转义字符，我们可以将引号包含在字符串中：
 ```python
 >>> t = 'I like Tom\'s cat'
 >>> print(t)
 I like Tom's cat
 ```
-同样，大家猜猜，我们如何在字符串中表示“”？大家觉得应该怎样写？
-猜对了，就是对“”使用转义字符：
+同样，大家猜猜，我们如何在字符串中表示“\\”？大家觉得应该怎样写？
+猜对了，就是对“\\”使用转义字符：
 ```python
 >>> t = 'I like \\Tom\\'
 >>> print(t)
 I like \Tom\
 ```
-还有一些其他转义字符，例如常用的换行符“n”
+还有一些其他转义字符，例如常用的换行符“\\n”
 ```python
 >>> t = 'I like \n Tom'
 >>> print(t)
@@ -383,9 +383,12 @@ Tom
 如果没有如上的三种情况，单引号，双引号和三引号，是没差别的。
 
 字符串还有很多有意思的操作特性，我们不再一一举例子，大家请保存下面的链接，我们强烈建议你好好的读一遍。然后把这个链接保存起来，以后当遇到字符串问题时，可以翻出来看看怎么用。
-[https://www.runoob.com/python/python-strings.html](https://www.runoob.com/python/python-strings.html)
+[https://www.runoob.com/python/python-strings.html][2]
 
 
 ## 作业：
 写一个程序，使用input()接收用户输入一个字符串，将该字符串顺序颠倒后用print()输出，例如：用户输入‘ABC123’，则程序输出结果应该是：‘321CBA’。
 【特别提醒】其实可以有很多种方式实现该功能。大家不妨尝试一下。如果能用多种方式实现，我们有奖励！
+
+[1]:	https://docs.python.org/3.7/library/stdtypes.html#text-sequence-type-str
+[2]:	https://www.runoob.com/python/python-strings.html
