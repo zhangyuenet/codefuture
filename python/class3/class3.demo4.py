@@ -2,4 +2,4 @@
 # -*- coding: utf-8 -*-
 
 orgin_str = input('输入一些字符：')
-ß
+print(orgin_str)
