@@ -232,7 +232,7 @@ $ python3 class5.demo4.py
 用户名：zhao@qq.com；密码：asdf
 ```
 
-提示1：Python可以用readlines按行独出所有的数据，并存在list中，可以这样使用：
+提示1：Python可以用readlines按行读出所有的数据，并存在list中，可以这样使用：
 ```bash
 for line in f.readlines():
     print(line.strip()) # 把末尾的'\n'删掉
