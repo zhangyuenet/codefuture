@@ -213,6 +213,22 @@ print(s.decode('utf-7'))
 （2）用”rb”模式读取bytes数据，并用”utf-8”解码。
 这两种模式本质上是一样的，因为文件存储缺省使用”utf-8”编码。
 
+如果文件内容包含多行，可以用readlines()读取。例如：一个文件包含如下的内容：
+```python
+111
+222
+333
+```
+我们可以用如下的代码读取所有的行并保存在一个list中：
+```python
+f = open('multilines.txt','r')
+alist = []
+for line in f.readlines():
+	# strip()可以吧一行文字中前后的空格和一些换行符号去掉。
+    alist.append(line.strip()) 
+f.close()
+print(alist)
+```
 大家一定要时刻保持注意，open的东西往往需要我们close。因为每一次open，都要占用系统资源，如果总是不关闭，系统占用的大量资源无法释放。文件也是中处在使用中的状态。
 
 ## 作业（参考实现demo4.py）
@@ -232,10 +248,9 @@ $ python3 class5.demo4.py
 用户名：zhao@qq.com；密码：asdf
 ```
 
-提示1：Python可以用readlines按行独出所有的数据，并存在list中，可以这样使用：
-```bash
-for line in f.readlines():
-    print(line.strip()) # 把末尾的'\n'删掉
-```
+提示：对于“XXXX;XXXX;XXXX”这样的字符串，可以用string.split()方法将字符串方便的拆分成三部分，并存入一个列表。具体用法，老师不讲，请大家用关键字：“python split”自行搜索。
 
-提示2：对于“XXXX;XXXX;XXXX”这样的字符串，可以用string.split()方法将字符串方便的拆分成三部分，并存入一个列表。具体用法，老师不讲，请大家用关键字：“python split”自行搜索。
+【助教准备】如果学生找不到怎么用split，可以推荐如下的链接：
+[https://www.runoob.com/python3/python3-string-split.html][1]
+
+[1]:	https://www.runoob.com/python3/python3-string-split.html
