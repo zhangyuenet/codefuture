@@ -1,9 +1,6 @@
-def min(x, y):
-	if x > y:
-		return y
-	else:
-		return x
-
-print(min(5,8))
-print(min(1,'2'))
-print(min(1,3,5))
+n = int(input('输入一个整数：'))
+result = 0
+while n > 0 :
+	result = result + n
+	n = n - 1
+print('结果为：%d' % result)
