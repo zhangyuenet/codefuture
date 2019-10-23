@@ -110,9 +110,9 @@ done()
 ### 学生练习
 下面大家来做一个练习：
 如图（pic1），如果上过我们的入门课，应该在code.org中画过这幅图。大家尝试一下用python来实现（20分钟）。
-
+![][image-1]
 【提示】如果学生完成情况较差，则给大家提示scratch算法，出示pic1.1图片。
-
+![][image-2]
 
 ### 绘制数学函数
 大家看到了我们刚才画出的图线其实都是直线。如果需要画曲线应该怎么做呢？我们先来看一个例子（demo4）：
@@ -183,3 +183,6 @@ y = x * x
 [1]:	https://turtleacademy.com/playground
 [2]:	https://docs.python.org/3.7/library/turtle.html
 [3]:	https://docs.python.org/3.7/library/math.html?highlight=math#module-math
+
+[image-1]:	lecture10.pic1.png
+[image-2]:	https://github.com/zhangyuenet/codefuture/blob/master/python/Lecture10/lecture10.pic1.1.png
