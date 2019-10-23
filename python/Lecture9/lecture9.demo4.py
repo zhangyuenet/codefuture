@@ -18,6 +18,7 @@ r,g,b,a = logo.split()
 
 #position = (0,0)
 position = ((image_file.width - logo.width), (image_file.height - logo.height))
-result_img.paste(logo, position, mask=a) 
+result_img.paste(logo, position, logo)  
+# result_img.paste(logo, position, mask=a) 
 result_img.save('dog_logo2.png')
 
