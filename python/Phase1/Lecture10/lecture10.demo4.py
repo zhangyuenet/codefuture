@@ -21,6 +21,7 @@ goto(0,0)
 color('red')
 pendown()
 
+
 x = 0
 y = 0
 while x < 10:
