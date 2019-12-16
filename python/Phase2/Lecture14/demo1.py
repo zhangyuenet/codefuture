@@ -4,7 +4,7 @@ import socket
 # 创建一个socket:
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # 建立连接:
-s.connect(('news.baidu.com', 80))
+s.connect(('news.baidu.com',80))
 # 发送数据:
 s.send(b'GET / HTTP/1.1\r\nHost: news.baidu.com\r\nConnection: close\r\n\r\n')
 # 接收数据:
