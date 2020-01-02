@@ -188,24 +188,191 @@ Connection from 127.0.0.1:62140 closed.
 客户端可以反复启动，服务端也将反复的打印上述信息。
 最后大家注意，客户端执行完成就直接退出了。而服务器是不会退出的，除非我们输入Ctrl+C命令强制退出。
 
-## 多个客户端同时连接的情况
-我们在服务端listen的函数中，定义了我们允许同时接受5个客户端连接，现在就让我们来试试看，如果有多个客户端同时连接会有什么情形发生。在启动服务端的情况下，打开两个命令行窗口，启动第一个客户端，然后紧接着马山在启动第二个。我们会看到。第二个客户端启动后并没有马上显示welome，而是要等第一个客户端全部执行完，才能开始正常执行第二个客户端的程序。
+## 设计一个简单的协议
+刚才我们讲到了协议（Protocol），这在编程中是个重要的概念。大体上，两个设备通信，大家要么遵从某种设计好的协议，要么根据实际需要自行设计一套协议。在今天的课程中，我们尝试自行设计一套协议，前面讲过，所谓协议，就是一套规则。我们来定义这套规则。
+```bash
+需求：我们希望可以向服务器发送一条通信记录，并且可以通过同样的客户端查询该记录。
+命令1: 添加/修改一条记录
+add;[姓名];[手机号码]
+exit
 
-这说明，我们写的服务端程序，同一时刻只能处理一个客户端的连接。到这里，我们肯定要问一个问题，可否让我们的程序同时处理多个客户端连接。毕竟我们知道，当有好的电影在视频网站发布的时候，可能有好几百万人同时连接服务器观看的。
+服务器响应：
+[姓名] added!
 
-为了实现这个目标，我们要学习一个新的概念：多线程。
+为了简便起见，当服务器发现同样的姓名已经存在时，直接用新的记录覆盖，相当于更新了该姓名的手机号。
 
-## 多线程
-多线程的概念其实不难理解。
+例如：我们需要向服务器添加一条记录时，发送如下消息：
+add;zhangsan;13800138000
+exit
 
-```python
-# 创建新线程来处理TCP连接:
-t = threading.Thread(target=tcplink, args=(sock, addr))
-t.start()
+服务器响应为：
+zhangsan added!
+
+命令2: 删除一条记录
+remove
+[姓名]
+exit
+
+服务器响应为：
+[姓名] removed！
+或者：
+Not found!
+
+例如：我们需要向服务器删除一条记录时，发送如下消息：
+remove;zhangsan
+exit
+
+服务器响应为：
+zhangsan removed!
+或者：
+Not Found!
+
+
+命令3: 查询一条记录
+find;[姓名]
+exit
+
+服务器响应为：
+[手机号]
+或者
+Not Found!
+
+例如：我们向服务器发送一条查询记录：
+find;zhangsan
+exit
+
+服务器响应为：
+13800138000
+或者
+Not Found!
 
 ```
 
+以上的设计，说难不难，但也不简单。我们一起来实现一条语句。
+首先我们需要改造客户端。Add语句如果我们不想写死，就需要让程序在执行时让用户输入，我们之前学过一种方式input()，获得用户参数，今天我们用另一种方式：程序参数。程序参数顾名思义，是在程序启动时获得的参数，在Python中，简单的参数处理用内置的sys模块就可以处理（复杂的推荐使用getopt模块处理，有兴趣的同学可以查查看），基本用法很简单：
+`sys.argv` 是命令行参数列表。
+`len(sys.argv)` 是命令行参数个数。
+注：`sys.argv[0]` 表示脚本名。
+用例子来看就清楚了：
+```python
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 
+import sys
 
+print '参数个数为:', len(sys.argv), '个参数。'
+print '参数列表:', str(sys.argv)
+```
+执行以上代码，输出结果为：
+```bash
+$ python test.py arg1 arg2 arg3
+参数个数为: 4 个参数。
+参数列表: ['test.py', 'arg1', 'arg2', 'arg3']
+```
 
+所以，我们可以简单的用参数吧命令通过client传递给server (client2.py)：
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import socket
+import sys
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# 建立连接:
+s.connect(('127.0.0.1', 9999))
+# 接收欢迎消息:
+print(s.recv(1024).decode('utf-8'))
+s.send((';'.join(sys.argv[1:])).encode('utf-8'))
+print(s.recv(1024).decode('utf-8'))
+s.send(b'exit')
+s.close()
+```
+
+这里面关键的一行是：
+```python
+s.send((';'.join(sys.argv[1:])).encode('utf-8'))
+```
+大家再去查查看字符串join和split的用法，他们几乎总是成对出现，我们等会就会用到split。
+Join方法将一个list用“；”连接成一个字符串，这是个非常有用的办法，请大家一定记住。
+另外，我们用`sys.argv[1:]` 来传递给服务器的参数。在list中，`[1:]`代表index从1到最后的所有内容。为什么这样写？大家想想？
+
+【学生提问】为什么我们不传递sys.argv，而要忽略第一个参数？
+
+大家答对了，第一个参数是程序名称本身，服务器并不需要这个名称，所以我们从index=1开始，忽略掉这个程序名称。
+
+现在我们马上试试看，在server没有改动的情况下：
+```bash
+ $ python3 client2.py add zhangsan 12345
+Welcome!
+Received add;zhangsan;12345
+```
+
+这样一来，所有的命令都可以通过简单的参数方式发送了。那么重要的工作就在服务端。我们来处理Add的情形：
+因为要保存姓名和电话号码，大家想想，用什么数据结构比较方便：
+
+【学生提问】从下面的结构中选择出来适合保存姓名和电话的数据结构：
+字符串/数组/list/tuple/dict/set 
+【同时请学生回忆一下这些类型之间的区别】
+
+很棒，我们用dict可以很好的解决这个问题（当然，用list或者其它也完全可以达到目标）。
+我们先定义一个空的dict:
+```bash
+contacts = {}
+```
+
+然后在接受数据的地方处理指令：
+```bash
+        arg = data.decode('utf-8').split(';')
+        if arg[0] == 'add':
+            contacts[arg[1]] = arg[2]
+            sock.send(('%s added' % arg[1]).encode('utf-8'))
+```
+
+大家看到了，因为发送的时候用了join将列表连接成字符串，就可以在接受的时候用split将字符串拆分成列表，他们配对使用，就会很方便。  
+
+完整代码如下（server2.py）：
+```bash
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# single thread contacts server example
+# CodeFuture@CA
+
+# 导入socket库:
+import socket
+import time
+
+contacts = {}
+
+def worker(sock, addr):
+    print('Accept new connection from %s:%s...' % addr)
+    sock.send(b'Welcome!')
+    while True:
+        data = sock.recv(1024)
+        if not data or data.decode('utf-8') == 'exit':
+            break
+        arg = data.decode('utf-8').split(';')
+        if arg[0] == 'add':
+            contacts[arg[1]] = arg[2]
+            print(contacts) #在服务端显示当前存储的数据
+            sock.send(('%s added' % arg[1]).encode('utf-8'))
+
+    sock.close()
+    print('Connection from %s:%s closed.' % addr)
+    
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# 监听端口:
+s.bind(('127.0.0.1', 9999))
+s.listen(5)
+print('Waiting for connection...')
+while True:
+    # 接受一个新连接:
+    sock, addr = s.accept()
+    worker(sock, addr) 
+
+```
+好了，我们分别运行一下server2.py和client2.py。看看结果是正常运行的。现在到了大家练习的时间，剩下的部分，就是今天的作业啦，
 ## 作业
+继续在老师的代码基础上，在客户端实现remove和find命令。

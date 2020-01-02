@@ -21,4 +21,5 @@ build
 # ulysses temp file.
 .Ulysses-Group.plist 
 .Ulysses-favorites.plist
+.Ulysses-Settings.plist
 

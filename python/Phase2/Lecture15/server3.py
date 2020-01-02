@@ -20,9 +20,21 @@ def worker(sock, addr):
         arg = data.decode('utf-8').split(';')
         if arg[0] == 'add':
             contacts[arg[1]] = arg[2]
-            print(contacts) #在服务端显示当前存储的数据
             sock.send(('%s added' % arg[1]).encode('utf-8'))
-
+        elif arg[0] == 'remove':
+            if arg[1] in contacts :
+                contacts.pop(arg[1])
+                sock.send(('%s removed' % arg[1]).encode('utf-8'))
+            else:
+                sock.send('Not found'.encode('utf-8'))
+            
+        elif arg[0] == 'find':
+            if arg[1] in contacts:
+                sock.send(contacts[arg[1]].encode('utf-8'))
+            else:
+                sock.send('Not found'.encode('utf-8'))
+        print(contacts) #在服务端显示当前存储的数据
+    
     sock.close()
     print('Connection from %s:%s closed.' % addr)
     
