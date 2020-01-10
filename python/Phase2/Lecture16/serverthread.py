@@ -31,6 +31,6 @@ while True:
     # 接受一个新连接:
     sock, addr = s.accept()
     # 创建新线程来处理TCP连接:
-    t = threading.Thread(target=tcplink, args=(sock, addr))
+    t = threading.Thread(target=worker, args=(sock, addr))
     t.start()
 
