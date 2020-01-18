@@ -34,6 +34,7 @@ while True:
     print('Received from %s:%s.' % addr)
     arg = data.decode('utf-8').split(';')
     if len(arg) <= 1:
+        s.sendto('ERROR: bad command'.encode('utf-8'), addr)
         continue #bad args
     if arg[0] == 'send':
         if len(arg) != 4:

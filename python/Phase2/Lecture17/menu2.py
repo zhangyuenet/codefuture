@@ -1,7 +1,11 @@
-# pip3 install tty_menu
+#pip install pick
+#pip install windows-curses (only on windows)
 
-from tty_menu import tty_menu
 
-menulist = ['Get List','Remove','Send Mail','Quit']
-pos = tty_menu(menulist, "Enter an option: ")
-print("your choice is %s" % menulist[pos])
+from pick import pick
+
+options = ['Get List','Remove','Send Mail','Quit']
+option, index = pick(options, 'Enter an option:')
+print(option)
+print(index)
+

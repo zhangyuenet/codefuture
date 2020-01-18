@@ -4,8 +4,7 @@
 import socket
 import sys
 
-# pip3 install tty_menu
-from tty_menu import tty_menu
+from pick import pick
 
 
 def run(cmd):
@@ -24,22 +23,22 @@ elif len(sys.argv) == 2:
 menulist = ['Get List','Remove','Send Mail','Quit']
 while True:
 
-	pos = tty_menu(menulist, ("Hello %s, enter an option: " % myname))
+	option, pos = pick(menulist, "Enter an option: ")
 	if pos == 0:
 		#Get List
 		run('list;%s' % myname)
-
+		input('press any key to continue...')
 	elif pos == 1:
 		# Remove
 		mailid = input('input mailid:')
 		run('remove;%s;%s' % (myname, mailid))
-
+		input('press any key to continue...')
 	elif pos == 2:
 		# Send Mail
 		to = input('input reciver:\n')
 		msg = input('input message:\n')
 		run('send;%s;%s;%s'% (myname, to, msg))
-
+		input('press any key to continue...')
 	else:
 		print('\nBye!\n')
 		break
