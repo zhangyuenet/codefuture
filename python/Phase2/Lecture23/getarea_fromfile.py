@@ -18,7 +18,8 @@ try:
     print(len(results))
     for result in results:
         world[result["countryName"]] = result["confirmedCount"]
-    #print(world)
+    print(world)
+    print("\r\n =============================== \r\n")
     #sort
     sortlist = []
     for key in world.keys():
