@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #京东商品信息爬虫  
-#爬取京东商品信息并保存到csv格式文件中  
+#爬取京东商品信息并保存到csv格式文件中  参考答案
 #2017-7-23  
   
   
@@ -57,11 +57,36 @@ def findhtml(html,httplist):
         commit = aggressmentdiv.strong.a['href']  
         ui.append(commit)#评论链接添加到ui中  
 
-        giftdiv = link.find('div', class_='p-icons') #找赠品
-        print(giftdiv)
-        print('=========')
 
-        if giftdiv.text.find('赠') :
+        icondiv = link.find('div', class_='p-icons') #寻找赠品标志
+        #print(icondiv.text)
+
+        '''
+        #method 1
+        if '赠' in icondiv.text:
+            ui.append('有')
+        else:
+            ui.append('无')
+        '''
+        
+        '''
+        #method 2
+        gift = '无'
+        infolist = icondiv.find_all('i', class_='goods-icons4 J-picon-tips')
+        print(len(infolist))
+        if len(infolist) > 0:
+            for info in infolist:
+                if info.text == '赠':
+                    gift = '有'
+                    break
+        ui.append(gift)
+        '''
+ 
+
+        #method 3
+        gift = icondiv.find('i', attrs={'data-tips':'购买本商品送赠品'})
+
+        if gift != None:
             ui.append('有')
         else:
             ui.append('无')
@@ -80,7 +105,7 @@ def savehtml(goods, ul):
         writer.writerow(['商品','链接','价格','评价','赠品'])  
         for u in range(len(ul)):  
             if ul[u]:  
-                writer.writerow([ul[u][0],ul[u][1],ul[u][2],ul[u][3],ul[u][4]])
+                writer.writerow([ul[u][0],ul[u][1],ul[u][2],ul[u][3], ul[u][4]])
                 
   
   
