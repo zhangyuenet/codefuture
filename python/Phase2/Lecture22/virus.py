@@ -6,6 +6,18 @@ from lxml import etree
 from fake_useragent import UserAgent
 from matplotlib import pyplot as plt
 
+
+def ClearInt(str) :
+	str = str.replace(',' , '')
+	str = str.strip()
+	if str == '':
+		str = '0' 
+	elif str == 'N/A':
+		str = '0'
+
+	return int(str)
+
+
 url = 'https://www.worldometers.info/coronavirus/'
 #ua = UserAgent()
 #header = {"User-Agent": ua.random}
@@ -16,17 +28,32 @@ html = requests.get(url, headers=header).text
 
 #获取数据
 data = etree.HTML(html)
-datalist = data.xpath('//table[@id="main_table_countries"]/tbody[1]/tr') # td[1]/text()
+datalist = data.xpath('//table[@id="main_table_countries_today"]/tbody[1]/tr[not(contains(@class, "total_row_world"))]') # td[1]/text()
+#print(len(datalist))
 mylist = []
 for countryitem in datalist:
+
 	item = []
-	name = countryitem.xpath('td[1]/text()')[0]
-	if name == ' ':
-		name = countryitem.xpath('td[1]/span/text()')[0]  #country name
+	nameitem = countryitem.xpath('td[1]/a/text()')
+	if len(nameitem) >  0:
+		name = nameitem[0]  #country name
+	else:
+		nameitem = countryitem.xpath('td[1]/span/text()')  # For diamond Princess
+		if len(nameitem) > 0:
+			name = nameitem[0]
 	item.append(name)
-	item.append(countryitem.xpath('td[4]/text()')[0]) # Total Deaths
-	item.append(countryitem.xpath('td[6]/text()')[0]) # Active Cases
-	item.append(countryitem.xpath('td[7]/text()')[0]) # Total Recovered
+
+	deathitem = countryitem.xpath('td[4]/text()')
+	if len(deathitem) > 0:
+		item.append(deathitem[0]) # Total Deaths
+	
+	activeitem = countryitem.xpath('td[7]/text()')
+	if len(activeitem) > 0:
+		item.append(activeitem[0]) # Active Cases
+	
+	recoveritem = countryitem.xpath('td[6]/text()')
+	if len(recoveritem) > 0:
+		item.append(recoveritem[0]) # Total Recovered
 	
 	mylist.append(item)
 
@@ -41,14 +68,11 @@ activelist = []
 recoveredlist = []
 
 
-for i in range(1,10):
+for i in range(0,10):
 	namelist.append(mylist[i][0])
-	deathnum = mylist[i][1].replace(',','')
-	if deathnum == ' ':
-		deathnum = '0' 
-	deathlist.append(int(deathnum))
-	activelist.append(int(mylist[i][2].replace(',','')))
-	recoveredlist.append(int(mylist[i][3].replace(',','')))
+	deathlist.append(ClearInt(mylist[i][1]))
+	activelist.append(ClearInt(mylist[i][2]))
+	recoveredlist.append(ClearInt(mylist[i][3]))
 
 
 plt.bar(namelist, deathlist, color = 'r', align = 'center')
