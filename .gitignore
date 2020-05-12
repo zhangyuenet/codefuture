@@ -23,3 +23,6 @@ build
 .Ulysses-favorites.plist
 .Ulysses-Settings.plist
 
+# 特殊的数据文件
+DXYArea-TimeSeries.json
+

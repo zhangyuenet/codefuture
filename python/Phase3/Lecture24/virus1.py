@@ -6,7 +6,6 @@
 # Section1
 
 import pandas as pd
-import json
 import time
 
 try:
