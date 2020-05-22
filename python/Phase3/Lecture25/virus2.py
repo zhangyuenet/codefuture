@@ -8,14 +8,27 @@
 import pandas as pd
 import time
 import matplotlib.pyplot as plt
+import os
+import sys
+
+print('请稍后，准备数据...')
+f = None
 
 try:
-	f = open('DXYArea-TimeSeries.json', 'r')
+	#获取程序所在路径。
+	currentPath = os.path.split(sys.argv[0])[0]
+	#根据程序所在路径获取数据文件的完整路径。
+	filePath = os.path.join( currentPath, 'DXYArea-TimeSeries.json')
+	print(filePath)
+	f = open(filePath, 'r', encoding='UTF-8')
+	
 	df = pd.read_json(f.read())  #DataFrame
-except:
-	print("Error: Load data failed.")
+	
+except Exception as e:
+	print("Error: Load data failed: %s" % str(e))
 finally:
-	f.close()
+	if f:
+		f.close()
 
 df = df[['provinceName','currentConfirmedCount', 'updateTime']]
 # 解决日期问题
@@ -41,7 +54,7 @@ canada0420 = df[df['date'] == '2020-04-16'][df['provinceName'] == '加拿大']
 print(canada0420)
 
 
-fig, ax = plt.subplots(figsize=(15,8))
+fig, ax = plt.subplots(figsize=(15,4))
 plt.rcParams['font.sans-serif']=['SimHei'] #用来正常显示中文标签
 
 

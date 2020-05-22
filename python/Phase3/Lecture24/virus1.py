@@ -7,14 +7,26 @@
 
 import pandas as pd
 import time
+import os
+import sys
+
+f = None
 
 try:
-	f = open('DXYArea-TimeSeries.json', 'r')
+	#获取程序所在路径。
+	currentPath = os.path.split(sys.argv[0])[0]
+	#根据程序所在路径获取数据文件的完整路径。
+	filePath = os.path.join( currentPath, 'DXYArea-TimeSeries.json')
+	print(filePath)
+	f = open(filePath, 'r', encoding='UTF-8')
+	
 	df = pd.read_json(f.read())  #DataFrame
-except:
-	print("Error: Load data failed.")
+	
+except Exception as e:
+	print("Error: Load data failed: %s" % str(e))
 finally:
-	f.close()
+	if f:
+		f.close()
 
 
 print(len(df))
