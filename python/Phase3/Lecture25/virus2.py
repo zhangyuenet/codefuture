@@ -14,6 +14,8 @@ import sys
 print('请稍后，准备数据...')
 f = None
 
+date = input("请输入一个日期：格式：YYYY-MM-DD");
+
 try:
 	#获取程序所在路径。
 	currentPath = os.path.split(sys.argv[0])[0]
@@ -61,7 +63,7 @@ plt.rcParams['font.sans-serif']=['SimHei'] #用来正常显示中文标签
 dfshow = df[df.date == '2020-04-16'].sort_values('currentConfirmedCount', ascending=False)
 dfshow = dfshow.head(20)
 #print(dfshow)
-ax.barh(dfshow['provinceName'], dfshow['currentConfirmedCount'])
+ax.barh(dfshow['provinceName'], dfshow['currentConfirmedCount'], color='#774777')
 ax.text(1, 0.4, '2020-04-16', transform=ax.transAxes, color='#777777', size=30, ha='right', weight=800)
 for i, (value, name) in enumerate(zip(dfshow['currentConfirmedCount'], dfshow['provinceName'])):
 	ax.text(value + 100, i, f'{value:,.0f}', size=12, weight=600, ha='left', va='center')
