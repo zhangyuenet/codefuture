@@ -173,27 +173,27 @@ visualmap_opts=opts.VisualMapOpts(max_=200),
 
 我们在列表中有美国“USA”，可是在地图中没有显示，原来，我们把美国的名称写错了。但是正确的名称是什么呢？很简单，当大家不知道地图上具体的行政区域是什么名字时，只需要先创建一个地图，然后用鼠标在需要的区域上悬浮，自然能看到名称了，原来，美国在地图中的名称是“United States”，大家注意，地图组件要求大家大小写正确。
 
-好了，今天的内容已经差不多了，最后，中国大陆学生当然经常还会用到和自己家乡相关的地图。这个也很简单，我们直接看看北京地图的代码：
+好了，今天的内容已经差不多了，最后，中国大陆学生当然经常还会用到和自己家乡相关的地图。这个也很简单，我们直接看看杭州地图的代码：
 
 ```python
-provinces = ["东城区", "西城区", "海淀区", "朝阳区", "大兴区", "房山区", "昌平区", "延庆区", "顺义区"]
+provinces = ["上城区", "下城区", "江干区", "滨江区", "萧山区", "余杭区","西湖区","拱墅区"]
 values = [155, 10, 66, 78, 33, 80, 190, 53, 49.6]
  
 c = (
     Map()
-    .add("学生地域分布", [list(z) for z in zip(provinces, values)], "北京")
+    .add("学生地域分布", [list(z) for z in zip(provinces, values)], "杭州")
     .set_series_opts(label_opts=opts.LabelOpts(is_show=True))
     .set_global_opts(
-        title_opts=opts.TitleOpts(title="北京地区"),
-        visualmap_opts=opts.VisualMapOpts(max_=200),
+        title_opts=opts.TitleOpts(title="杭州地区"),
+        visualmap_opts=opts.VisualMapOpts(max_=160),
     )
-    .render("map_beijing.html")
+    .render("map_hangzhou.html")
 )
 ```
 
 # 作业
 
-编造一点数据，创建一个你的家乡的地图把！
+编造一点数据，创建一个你家乡的地图，拿给父母和老师看看！
 
 
 # 附录： 构造一个链式操作
