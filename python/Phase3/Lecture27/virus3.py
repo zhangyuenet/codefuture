@@ -81,7 +81,7 @@ datelist.sort()
 ani = animation.FuncAnimation(fig, draw_by_date, frames = datelist, interval=100,  repeat=False)
 plt.show()
 
-#  brew install imagemagick
+# brew install imagemagick
 # ani.save('virus_animation.gif', writer='imagemagick')
 
 

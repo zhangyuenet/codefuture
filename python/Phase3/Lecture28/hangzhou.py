@@ -3,7 +3,7 @@
 from pyecharts import options as opts
 from pyecharts.charts import Map
 
-provinces = ["上城区", "下城区", "江干区", "滨江区", "萧山区", "余杭区","西湖区","拱墅区"]
+provinces = ["上城区", "下城区", "江干区", "未知区", "萧山区", "余杭区","西湖区","拱墅区"]
 values = [155, 10, 66, 78, 33, 80, 190, 53, 49.6]
  
 c = (
