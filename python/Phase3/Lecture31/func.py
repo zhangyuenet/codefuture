@@ -4,10 +4,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-x = np.arange(-10, 10, 0.1)
-#y = 2 * x + 1
-#y = x * x * x
-y = np.sin(x)
+x = np.arange(-10, 10, 1)
+print(x)
+y = 2 * x + 1
+print(y)
 
-plt.plot(x,y, color='r', linestyle='-', linewidth=1)
+plt.plot(x,y, color='r', linestyle='-',marker="*", linewidth=1)
 plt.show()
